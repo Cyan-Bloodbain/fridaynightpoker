@@ -1,5 +1,7 @@
 // pages/index.js
 import { useState } from "react";
+import Link from "next/link";
+import Head from "next/head";
 
 export default function Home() {
   const [report, setReport] = useState(null);
@@ -12,10 +14,10 @@ export default function Home() {
 
   return (
     <>
-      <head>
-        <title>Friday Night Poker</title>
-        <style>{`
-          body {
+	<Head>
+	  <title>Friday Night Poker</title>
+	  <style>{`
+		body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
@@ -72,7 +74,7 @@ export default function Home() {
             background-color: #eee;
           }
         `}</style>
-      </head>
+	  </Head>
 
       <header>
         <h1>Friday Night Poker!</h1>
@@ -104,9 +106,9 @@ export default function Home() {
         <main>
           <h2>Welcome to the Friday Night Poker site!!!</h2>
 
-          <button onClick={() => loadReport("/api/report/top-stats")}>
-            Player List Test
-          </button>
+		  <Link href="/players">
+		    <button>Player List Test</button>
+		  </Link>
 
           <pre>{report ? JSON.stringify(report, null, 2) : ""}</pre>
 
