@@ -1,28 +1,19 @@
-import mysql from "mysql2/promise";
+import mysql from 'mysql2/promise';
 
 export default async function handler(req, res) {
+  const connection = await mysql.createConnection({
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,
+  });
+
   try {
-    const connection = await mysql.createConnection({
-      host: process.env.DB_HOST,
-      user: process.env.DB_USER,
-      password: process.env.DB_PASSWORD,
-      database: "GameStatisticsDB",
-    });
-
-    const [rows] = await connection.execute(`
-      SELECT 
-        PREFERRED_NAME,
-        FIRST_NAME,
-        LAST_NAME,
-        EMAIL
-      FROM PLAYER
-    `);
-
-    await connection.end();
-
+    const [rows] = await connection.execute('SELECT * FROM players');
     res.status(200).json(rows);
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "Database error" });
+    res.status(500).json({ error: err.message });
+  } finally {
+    await connection.end();
   }
 }
