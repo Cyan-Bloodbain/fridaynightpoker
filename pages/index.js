@@ -87,9 +87,10 @@ export default function Home() {
         <main>
           <h2>Welcome to the Friday Night Poker site!!!</h2>
 
-<button onClick={() => { console.log("Button clicked"); loadReport("/api/players"); }}>
-  Load Player List
+<button onClick={() => loadReport("/api/players")} disabled={loading}>
+  {loading ? "Loading..." : "Load Player List"}
 </button>
+
 
 
           {error && <p style={{ color: "red" }}>{error}</p>}

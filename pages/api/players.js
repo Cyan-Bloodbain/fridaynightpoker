@@ -1,8 +1,19 @@
+// pages/api/players.js
 import mysql from 'mysql2/promise';
 
 export default async function handler(req, res) {
-  let connection;
+  const isProd = process.env.NODE_ENV === "production";
 
+  if (isProd) {
+    // Return mock data on Vercel
+    res.status(200).json([
+      { player_id: 1, first_name: "John", preferred_name: "Johnny", last_name: "Doe", email: "john@example.com" },
+      { player_id: 2, first_name: "Jane", preferred_name: "Janey", last_name: "Smith", email: "jane@example.com" },
+    ]);
+    return;
+  }
+
+  let connection;
   try {
     connection = await mysql.createConnection({
       host: process.env.DB_HOST || '127.0.0.1',
@@ -20,9 +31,6 @@ export default async function handler(req, res) {
     res.status(500).json({ error: error.message });
 
   } finally {
-    // wrap in a separate async block to avoid top-level await parsing issues
-    if (connection) {
-      connection.end().catch(err => console.error('Error closing DB connection:', err));
-    }
+    if (connection) connection.end().catch(err => console.error('Error closing DB connection:', err));
   }
 }
