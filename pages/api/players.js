@@ -23,7 +23,11 @@ export default async function handler(req, res) {
       database: process.env.DB_NAME,
     });
 
-    const [rows] = await connection.execute('SELECT * FROM player');
+console.log("Connecting to DB:", process.env.DB_HOST, process.env.DB_USER, process.env.DB_NAME);
+
+const [rows] = await connection.execute('SELECT * FROM player');
+console.log("Query returned:", rows);
+
     res.status(200).json(rows);
 
   } catch (error) {
