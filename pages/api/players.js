@@ -5,7 +5,7 @@ export default async function handler(req, res) {
 
   try {
     connection = await mysql.createConnection({
-      host: '127.0.0.1',       // 👈 force IPv4
+      host: '127.0.0.1',       // force IPv4
       port: 3306,
       user: process.env.DB_USER,
       password: process.env.DB_PASSWORD,
