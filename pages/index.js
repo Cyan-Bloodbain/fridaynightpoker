@@ -3,6 +3,19 @@ import { useState } from "react";
 import Link from "next/link";
 import Head from "next/head";
 
+const thStyle = {
+  border: "1px solid #ccc",
+  padding: "8px",
+  backgroundColor: "#444",
+  color: "white",
+  textAlign: "left",
+};
+
+const tdStyle = {
+  border: "1px solid #ccc",
+  padding: "8px",
+};
+
 export default function Home() {
   const [report, setReport] = useState(null);
 
@@ -106,11 +119,44 @@ export default function Home() {
         <main>
           <h2>Welcome to the Friday Night Poker site!!!</h2>
 
-		  <Link href="/players">
-		    <button>Player List Test</button>
-		  </Link>
+		  <button
+		    onClick={() => loadReport("/api/players")}
+		    disabled={Array.isArray(report)}
+		  >
+		    Load Player List
+		  </button>
 
-          <pre>{report ? JSON.stringify(report, null, 2) : ""}</pre>
+          {Array.isArray(report) && (
+			  <table
+				style={{
+				  width: "100%",
+				  borderCollapse: "collapse",
+				  marginTop: "1em",
+				}}
+			  >
+				<thead>
+				  <tr>
+					<th style={thStyle}>ID</th>
+					<th style={thStyle}>First Name</th>
+					<th style={thStyle}>Preferred</th>
+					<th style={thStyle}>Last Name</th>
+					<th style={thStyle}>Email</th>
+				  </tr>
+				</thead>
+				<tbody>
+				  {report.map((player) => (
+					<tr key={player.player_id}>
+					  <td style={tdStyle}>{player.player_id}</td>
+					  <td style={tdStyle}>{player.first_name}</td>
+					  <td style={tdStyle}>{player.preferred_name}</td>
+					  <td style={tdStyle}>{player.last_name}</td>
+					  <td style={tdStyle}>{player.email}</td>
+					</tr>
+				  ))}
+				</tbody>
+			  </table>
+			)}
+
 
           <p>
             On the site you can check the poker stats section and rate your
